@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+}
+
+@layer components {
+  .availability-cell {
+    @apply w-full h-8 border border-gray-200 cursor-pointer transition-all duration-200 hover:shadow-sm;
+  }
+  
+  .availability-cell.available {
+    @apply bg-available bg-opacity-20 border-available hover:bg-opacity-30;
+  }
+  
+  .availability-cell.busy {
+    @apply bg-busy bg-opacity-20 border-busy hover:bg-opacity-30;
+  }
+  
+  .availability-cell.tentative {
+    @apply bg-tentative bg-opacity-20 border-tentative hover:bg-opacity-30;
+  }
+  
+  .status-indicator {
+    @apply w-3 h-3 rounded-full border-2 border-white shadow-sm;
+  }
+  
+  .status-indicator.available {
+    @apply bg-available;
+  }
+  
+  .status-indicator.busy {
+    @apply bg-busy;
+  }
+  
+  .status-indicator.tentative {
+    @apply bg-tentative;
+  }
+}

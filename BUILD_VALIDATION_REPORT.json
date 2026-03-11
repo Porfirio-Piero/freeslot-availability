@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-03-11T01:30:00.000Z",
+  "project_path": "C:\\Users\\devpi\\.openclaw\\workspace\\freeslot-availability",
+  "grade": "A",
+  "checks_passed": 5,
+  "errors": [],
+  "warnings": [],
+  "passed_checks": {
+    "page_not_default": true,
+    "file_size_ok": true,
+    "substantial_code": true,
+    "has_ui_elements": 10,
+    "has_interactivity": 7,
+    "builds_cleanly": true
+  },
+  "status": "PASS",
+  "metrics": {
+    "page_tsx_size_bytes": 10608,
+    "page_tsx_lines": 297,
+    "build_artifacts": [
+      ".next/cache",
+      ".next/server",
+      ".next/static",
+      ".next/types"
+    ]
+  }
+}
