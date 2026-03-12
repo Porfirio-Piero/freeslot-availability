@@ -16,11 +16,13 @@ import {
   Check,
   Zap,
   Mail,
-  Share
+  Share,
+  Calendar
 } from 'lucide-react'
 import { useSchedule } from '@/lib/schedule-context'
 import { DURATIONS, TIMEZONES, DAYS, DAY_LABELS, Participant } from '@/lib/types'
 import { cn, copyToClipboard } from '@/lib/utils'
+import { CalendarSync } from '@/components/calendar-sync'
 
 const QUICK_ACTIONS = [
   { id: 'generate', label: 'Generate Meeting Options', icon: Sparkles, shortcut: 'G' },
@@ -41,6 +43,8 @@ export function LeftSidebar() {
   const [showTimezoneMenu, setShowTimezoneMenu] = useState(false)
   const [showAddParticipant, setShowAddParticipant] = useState(false)
   const [newParticipantName, setNewParticipantName] = useState('')
+  const [googleConnected, setGoogleConnected] = useState(false)
+  const [microsoftConnected, setMicrosoftConnected] = useState(false)
 
   const handleCopyLink = async () => {
     await copyToClipboard('https://freeslot.app/share/demo')
@@ -51,11 +55,11 @@ export function LeftSidebar() {
       initial={{ x: -20, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ delay: 0.1 }}
-      className="w-72 bg-slate-50/50 border-r border-slate-200/60 flex flex-col h-[calc(100vh-56px)] overflow-hidden"
+      className="w-72 bg-slate-50/50 dark:bg-slate-900/50 border-r border-slate-200/60 dark:border-slate-700/60 flex flex-col h-[calc(100vh-56px)] overflow-hidden"
     >
       {/* Quick Actions Section */}
-      <div className="p-4 border-b border-slate-200/60">
-        <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+      <div className="p-4 border-b border-slate-200/60 dark:border-slate-700/60">
+        <h3 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">
           Quick Actions
         </h3>
         <div className="space-y-1">
@@ -66,13 +70,13 @@ export function LeftSidebar() {
                 key={action.id}
                 whileHover={{ x: 4, backgroundColor: 'rgba(255,255,255,0.8)' }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 hover:text-slate-900 transition-all group"
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all group"
               >
-                <div className="w-8 h-8 rounded-lg bg-white border border-slate-200/60 flex items-center justify-center group-hover:border-blue-200 group-hover:shadow-sm transition-all">
-                  <Icon className="w-4 h-4 text-slate-500 group-hover:text-blue-500" />
+                <div className="w-8 h-8 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700 flex items-center justify-center group-hover:border-blue-200 dark:group-hover:border-blue-500 shadow-sm transition-all">
+                  <Icon className="w-4 h-4 text-slate-500 dark:text-slate-400 group-hover:text-blue-500" />
                 </div>
                 <span className="flex-1 text-left">{action.label}</span>
-                <kbd className="text-xs text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded hidden group-hover:block">
+                <kbd className="text-xs text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded hidden group-hover:block">
                   {action.shortcut}
                 </kbd>
               </motion.button>
@@ -81,19 +85,41 @@ export function LeftSidebar() {
         </div>
       </div>
 
+      {/* Calendar Sync Section */}
+      <div className="p-4 border-b border-slate-200/60 dark:border-slate-700/60">
+        <h3 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+          <Calendar className="w-3.5 h-3.5" />
+          Calendar Sync
+        </h3>
+        <div className="space-y-2">
+          <CalendarSync 
+            provider="google" 
+            connected={googleConnected}
+            onConnect={() => setGoogleConnected(true)}
+            onDisconnect={() => setGoogleConnected(false)}
+          />
+          <CalendarSync 
+            provider="microsoft" 
+            connected={microsoftConnected}
+            onConnect={() => setMicrosoftConnected(true)}
+            onDisconnect={() => setMicrosoftConnected(false)}
+          />
+        </div>
+      </div>
+
       {/* Meeting Settings Section */}
-      <div className="p-4 border-b border-slate-200/60">
-        <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+      <div className="p-4 border-b border-slate-200/60 dark:border-slate-700/60">
+        <h3 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">
           Meeting Settings
         </h3>
         
         {/* Duration Selector */}
         <div className="mb-3">
-          <label className="text-xs text-slate-500 mb-1 block">Duration</label>
+          <label className="text-xs text-slate-500 dark:text-slate-400 mb-1 block">Duration</label>
           <div className="relative">
             <button
               onClick={() => setShowDurationMenu(!showDurationMenu)}
-              className="w-full flex items-center justify-between px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm"
+              className="w-full flex items-center justify-between px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm dark:text-white"
             >
               <span className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-slate-400" />
@@ -107,7 +133,7 @@ export function LeftSidebar() {
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
-                  className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-lg shadow-lg overflow-hidden z-10"
+                  className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg overflow-hidden z-10"
                 >
                   {DURATIONS.map((d) => (
                     <button
@@ -117,8 +143,8 @@ export function LeftSidebar() {
                         setShowDurationMenu(false)
                       }}
                       className={cn(
-                        "w-full px-3 py-2 text-sm flex items-center justify-between hover:bg-slate-50",
-                        settings.duration === d.value && "bg-blue-50 text-blue-600"
+                        "w-full px-3 py-2 text-sm flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-700",
+                        settings.duration === d.value && "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
                       )}
                     >
                       <span>{d.label}</span>
@@ -133,11 +159,11 @@ export function LeftSidebar() {
 
         {/* Timezone Selector */}
         <div className="mb-3">
-          <label className="text-xs text-slate-500 mb-1 block">Timezone</label>
+          <label className="text-xs text-slate-500 dark:text-slate-400 mb-1 block">Timezone</label>
           <div className="relative">
             <button
               onClick={() => setShowTimezoneMenu(!showTimezoneMenu)}
-              className="w-full flex items-center justify-between px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm"
+              className="w-full flex items-center justify-between px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm dark:text-white"
             >
               <span className="flex items-center gap-2">
                 <Globe className="w-4 h-4 text-slate-400" />
@@ -151,7 +177,7 @@ export function LeftSidebar() {
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
-                  className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-lg shadow-lg overflow-hidden z-10 max-h-48 overflow-y-auto"
+                  className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg overflow-hidden z-10 max-h-48 overflow-y-auto"
                 >
                   {TIMEZONES.map((tz) => (
                     <button
@@ -161,8 +187,8 @@ export function LeftSidebar() {
                         setShowTimezoneMenu(false)
                       }}
                       className={cn(
-                        "w-full px-3 py-2 text-sm flex items-center justify-between hover:bg-slate-50",
-                        settings.timezone === tz.value && "bg-blue-50 text-blue-600"
+                        "w-full px-3 py-2 text-sm flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-700",
+                        settings.timezone === tz.value && "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
                       )}
                     >
                       <span>{tz.label}</span>
@@ -178,23 +204,23 @@ export function LeftSidebar() {
         {/* Working Hours */}
         <div className="flex gap-2">
           <div className="flex-1">
-            <label className="text-xs text-slate-500 mb-1 block">Start</label>
+            <label className="text-xs text-slate-500 dark:text-slate-400 mb-1 block">Start</label>
             <select 
               value={settings.workingHoursStart}
               onChange={(e) => updateSettings({ workingHoursStart: parseInt(e.target.value) })}
-              className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm"
+              className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm dark:text-white"
             >
               {Array.from({ length: 12 }, (_, i) => i + 6).map((h) => (
-                <option key={h} value={h}>{h}:00 AM</option>
+                <option key={h} value={h}>{h > 12 ? h - 12 : h}:00 {h >= 12 ? 'PM' : 'AM'}</option>
               ))}
             </select>
           </div>
           <div className="flex-1">
-            <label className="text-xs text-slate-500 mb-1 block">End</label>
+            <label className="text-xs text-slate-500 dark:text-slate-400 mb-1 block">End</label>
             <select 
               value={settings.workingHoursEnd}
               onChange={(e) => updateSettings({ workingHoursEnd: parseInt(e.target.value) })}
-              className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm"
+              className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm dark:text-white"
             >
               {Array.from({ length: 12 }, (_, i) => i + 12).map((h) => (
                 <option key={h} value={h}>{h > 12 ? h - 12 : h}:00 PM</option>
@@ -207,7 +233,7 @@ export function LeftSidebar() {
       {/* Participants Section */}
       <div className="p-4 flex-1 overflow-y-auto">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+          <h3 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
             Participants
           </h3>
           <motion.button
@@ -229,14 +255,14 @@ export function LeftSidebar() {
               whileHover={{ backgroundColor: 'rgba(255,255,255,0.5)' }}
               className="flex items-center gap-3 px-3 py-2 rounded-lg group"
             >
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
-                <span className="text-xs font-medium text-slate-600">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-600 dark:to-slate-700 flex items-center justify-center">
+                <span className="text-xs font-medium text-slate-600 dark:text-slate-300">
                   {participant.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
                 </span>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-slate-900 truncate">{participant.name}</p>
-                <p className="text-xs text-slate-500">{participant.role}</p>
+                <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{participant.name}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{participant.role}</p>
               </div>
               <div className="w-2 h-2 rounded-full bg-emerald-500" title="Available" />
             </motion.div>
@@ -259,21 +285,21 @@ export function LeftSidebar() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-xl shadow-xl p-4 w-64"
+              className="bg-white dark:bg-slate-800 rounded-xl shadow-xl p-4 w-64"
             >
-              <h4 className="font-medium text-slate-900 mb-3">Add Participant</h4>
+              <h4 className="font-medium text-slate-900 dark:text-white mb-3">Add Participant</h4>
               <input
                 type="text"
                 value={newParticipantName}
                 onChange={(e) => setNewParticipantName(e.target.value)}
                 placeholder="Enter name..."
-                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm mb-3"
+                className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm mb-3 dark:bg-slate-900 dark:text-white"
                 autoFocus
               />
               <div className="flex gap-2">
                 <button
                   onClick={() => setShowAddParticipant(false)}
-                  className="flex-1 px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-lg"
+                  className="flex-1 px-3 py-2 text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
                 >
                   Cancel
                 </button>

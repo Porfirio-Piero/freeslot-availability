@@ -24,16 +24,6 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.75rem;
-    
-    /* Custom colors for FreeSlot */
-    --available: 142.1 76.2% 36.3%;
-    --available-foreground: 142.1 76.2% 95%;
-    --busy: 0 84.2% 60.2%;
-    --busy-foreground: 0 84.2% 98%;
-    --tentative: 38 92% 50%;
-    --tentative-foreground: 38 92% 98%;
-    --preferred: 221.2 83.2% 53.3%;
-    --preferred-foreground: 221.2 83.2% 98%;
   }
 
   .dark {
@@ -71,11 +61,7 @@
 
 @layer utilities {
   .glass {
-    @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-lg;
-  }
-  
-  .glass-dark {
-    @apply bg-slate-900/80 backdrop-blur-xl border border-white/10 shadow-lg;
+    @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-lg;
   }
   
   .gradient-subtle {
@@ -85,36 +71,32 @@
   .gradient-card {
     background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
   }
-  
-  .cell-available {
-    @apply bg-emerald-50 hover:bg-emerald-100 border-emerald-200;
-  }
-  
-  .cell-busy {
-    @apply bg-red-50 hover:bg-red-100 border-red-200;
-  }
-  
-  .cell-tentative {
-    @apply bg-amber-50 hover:bg-amber-100 border-amber-200;
-  }
-  
-  .cell-preferred {
-    @apply bg-blue-50 hover:bg-blue-100 border-blue-200 ring-2 ring-blue-400;
-  }
-  
-  .cell-empty {
-    @apply bg-slate-50 hover:bg-slate-100 border-slate-200;
-  }
-  
-  .animate-glow {
-    animation: glow 2s ease-in-out infinite alternate;
-  }
-  
-  .animate-pulse-soft {
-    animation: pulse-soft 2s ease-in-out infinite;
-  }
 }
 
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400 dark:bg-slate-500;
+}
+
+/* Selection */
+::selection {
+  @apply bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100;
+}
+
+/* Animations */
 @keyframes glow {
   from {
     box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
@@ -133,25 +115,10 @@
   }
 }
 
-/* Smooth scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+.animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
 }
 
-::-webkit-scrollbar-track {
-  @apply bg-transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400;
-}
-
-/* Selection */
-::selection {
-  @apply bg-blue-100 text-blue-900;
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
 }
