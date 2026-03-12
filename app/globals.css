@@ -3,45 +3,155 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    font-family: 'Inter', system-ui, sans-serif;
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.75rem;
+    
+    /* Custom colors for FreeSlot */
+    --available: 142.1 76.2% 36.3%;
+    --available-foreground: 142.1 76.2% 95%;
+    --busy: 0 84.2% 60.2%;
+    --busy-foreground: 0 84.2% 98%;
+    --tentative: 38 92% 50%;
+    --tentative-foreground: 38 92% 98%;
+    --preferred: 221.2 83.2% 53.3%;
+    --preferred-foreground: 221.2 83.2% 98%;
   }
-  
-  body {
-    @apply bg-gray-50 text-gray-900;
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
   }
 }
 
-@layer components {
-  .availability-cell {
-    @apply w-full h-8 border border-gray-200 cursor-pointer transition-all duration-200 hover:shadow-sm;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-lg;
   }
   
-  .availability-cell.available {
-    @apply bg-available bg-opacity-20 border-available hover:bg-opacity-30;
+  .glass-dark {
+    @apply bg-slate-900/80 backdrop-blur-xl border border-white/10 shadow-lg;
   }
   
-  .availability-cell.busy {
-    @apply bg-busy bg-opacity-20 border-busy hover:bg-opacity-30;
+  .gradient-subtle {
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%);
   }
   
-  .availability-cell.tentative {
-    @apply bg-tentative bg-opacity-20 border-tentative hover:bg-opacity-30;
+  .gradient-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
   }
   
-  .status-indicator {
-    @apply w-3 h-3 rounded-full border-2 border-white shadow-sm;
+  .cell-available {
+    @apply bg-emerald-50 hover:bg-emerald-100 border-emerald-200;
   }
   
-  .status-indicator.available {
-    @apply bg-available;
+  .cell-busy {
+    @apply bg-red-50 hover:bg-red-100 border-red-200;
   }
   
-  .status-indicator.busy {
-    @apply bg-busy;
+  .cell-tentative {
+    @apply bg-amber-50 hover:bg-amber-100 border-amber-200;
   }
   
-  .status-indicator.tentative {
-    @apply bg-tentative;
+  .cell-preferred {
+    @apply bg-blue-50 hover:bg-blue-100 border-blue-200 ring-2 ring-blue-400;
   }
+  
+  .cell-empty {
+    @apply bg-slate-50 hover:bg-slate-100 border-slate-200;
+  }
+  
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  .animate-pulse-soft {
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+  }
+  to {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400;
+}
+
+/* Selection */
+::selection {
+  @apply bg-blue-100 text-blue-900;
 }

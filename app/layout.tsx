@@ -1,11 +1,29 @@
-import './globals.css'
+import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ 
+  subsets: ['latin'],
+  variable: '--font-inter'
+})
 
-export const metadata = {
-  title: 'FreeSlot - Professional Availability Messaging',
-  description: 'Simple availability grid with shareable links. No bookings, just availability.',
+export const metadata: Metadata = {
+  title: 'FreeSlot - Professional Availability Scheduling',
+  description: 'Share your availability and schedule meetings faster. FreeSlot helps executive assistants coordinate meetings effortlessly.',
+  keywords: ['scheduling', 'availability', 'calendar', 'meetings', 'executive assistant'],
+  authors: [{ name: 'FreeSlot' }],
+  openGraph: {
+    title: 'FreeSlot - Professional Availability Scheduling',
+    description: 'Share your availability and schedule meetings faster.',
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'FreeSlot'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FreeSlot - Professional Availability Scheduling',
+    description: 'Share your availability and schedule meetings faster.'
+  }
 }
 
 export default function RootLayout({
@@ -14,15 +32,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>" />
-      </head>
-      <body className={inter.className}>
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-          {children}
-        </div>
-      </body>
+    <html lang="en" className={inter.variable}>
+      <body className="font-sans antialiased">{children}</body>
     </html>
   )
 }
