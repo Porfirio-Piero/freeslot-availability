@@ -21,7 +21,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
-    "eslint": "^8",
+    "eslint": "^10",
     "eslint-config-next": "14.0.4",
     "framer-motion": "^12.35.2",
     "lucide-react": "^0.294.0",
