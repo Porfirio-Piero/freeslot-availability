@@ -37,3 +37,7 @@ next-env.d.ts
 .vscode/
 *.swp
 *.swo
+.vercel
+
+# Secrets
+.env.secrets
